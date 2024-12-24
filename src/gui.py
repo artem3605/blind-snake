@@ -3,7 +3,7 @@ from enum import Enum
 import random
 from time import sleep
 from PIL import Image, ImageDraw, ImageGrab
-from FastAlgorithm import FastAlgorithm
+from FastAlgorithm import FastAlgorithm, find_k
 from src.SpiralAlgorithm import SpiralAlgorithm
 import io
 random.seed(0)
@@ -175,12 +175,11 @@ def move_body(row, col, algorithm, game_map, window):
         window.update_cell(prev_x, prev_y, PointType.VISITED)
         window.capture_frame()
 
-        sleep(0.0001)
         window.update_step_counter(steps)
 
 
 def play_fast_algorithm(A, B, row, col, game_map, window):
-    alg = FastAlgorithm(max_s=A * B, k=26)
+    alg = FastAlgorithm(max_s=A * B, k=find_k(A * B))
     move_body(row, col, alg, game_map, window)
 
 
@@ -191,13 +190,13 @@ def play_spiral_algorithm(A, B, row, col, game_map, window):
 
 if __name__ == "__main__":
     config = Config()
-    A = 2
+    A = 20
     B = 20
     game_map = GameMap(rows=A, cols=B)
     row = random.randint(0, A - 1)
     col = random.randint(0, B - 1)
-    row_finish = 0
-    col_finish = 3
+    row_finish = random.randint(0, A - 1)
+    col_finish = random.randint(0, B - 1)
 
     game_map.set_point(row, col, PointType.BODY)
     game_map.set_point(row_finish, col_finish, PointType.FOOD)
@@ -205,6 +204,6 @@ if __name__ == "__main__":
     window = GameWindow("Game Window", config, game_map)
     window.draw_map()
     import threading
-    threading.Thread(target=play_spiral_algorithm, args=(A, B, row, col, game_map, window), daemon=True).start()
+    threading.Thread(target=play_fast_algorithm, args=(A, B, row, col, game_map, window), daemon=True).start()
 
     window.mainloop()

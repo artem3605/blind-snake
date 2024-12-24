@@ -10,6 +10,12 @@ def dist(p1, p2, not_visited):
 
 
 def find_k(S_max, k_max=100):
+    """
+    This method finds the optimal value of k for the given S_max.
+    :param S_max:
+    :param k_max:
+    :return:
+    """
     l = 0
     r = k_max
     while r - l > 1:
@@ -113,16 +119,16 @@ class FastAlgorithm:
                     yield from self._move("UP")
                     to_left = self.x - cnt_row[self.y] - 1
                     to_right = max(0, curr_s // self.y - self.x)
-                    cnt_row[self.y] = curr_s // self.y
+                    cnt_row[self.y] = max(self.x, curr_s // self.y)
                     if to_left < to_right:
                         yield from self._move("LEFT", to_left)
                         yield from self._move("RIGHT", to_left + to_right)
                     else:
                         yield from self._move("RIGHT", to_right)
                         yield from self._move("LEFT", to_left + to_right)
-                not_visited = 0
                 if curr_s == self.max_s:
                     self.finished = True
+                not_visited = 0
                 moves_type = 2
             elif moves_type == 2:
                 if not self._reachable((self.x, self.y), (ret[0], ret[1]), not_visited, self.time):
@@ -139,14 +145,15 @@ class FastAlgorithm:
             elif moves_type == 3:
                 curr_s = self.y
                 yield from self._move("RIGHT")
+                cnt_row[self.y] = max(self.x, cnt_row[self.y])
                 ret = [1, self.y + 1]
                 while self.x != curr_s + 1 or self.y != 1:
                     yield from self._move("DOWN")
                     to_left = max(0, self.x - cnt_row[self.y] - 1)
-                    to_right = curr_s // self.y - self.x
+                    to_right = max(0, curr_s // self.y - self.x)
                     if self.y == 1:
                         to_right += 1
-                    cnt_row[self.y] = curr_s // self.y
+                    cnt_row[self.y] = max(self.x, curr_s // self.y)
                     if to_left < to_right or self.y == 1:
                         yield from self._move("LEFT", to_left)
                         yield from self._move("RIGHT", to_left + to_right)
