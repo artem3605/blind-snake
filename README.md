@@ -1,6 +1,6 @@
 # Blind Snake Algorithm
 
-This project implements the Blind Snake Algorithm to solve the problem of navigating a grid. For $S_{max} = 10^6$, the fastest algorithm finds the apple in $O(26 S)$ steps.
+This project implements the Blind Snake Algorithm to solve the problem of navigating a grid. For $S_{max} = 10^6$, the fastest algorithm finds the apple in $O(26 S)$ steps. You can find some details about approaches in [report.pdf](./report.pdf).
 
 ## Spiral Algorithm ($$O(S^2)$$)
 You can find a more detailed explanation of the algorithm in [report.pdf](./report.pdf). Here you can see an example of the algorithm in action:
